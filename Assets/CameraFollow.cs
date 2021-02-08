@@ -11,21 +11,25 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Player.transform.position + Offset;
-        Yrot += (Input.GetAxis("Mouse Y"))*45;
-        Xrot += (Input.GetAxis("Mouse X"))*45;
         
-        Vector3 rotation = transform.eulerAngles;
+        Yrot += (Input.GetAxis("Mouse Y")) * 360 * Time.deltaTime;
+        Yrot = Mathf.Clamp(Yrot, -90, 90);
+        Xrot += (Input.GetAxis("Mouse X")) * 360 * Time.deltaTime;
 
-        rotation.x += (Input.GetAxis("Mouse Y")) * 360 * Time.deltaTime; 
-        rotation.y += (Input.GetAxis("Mouse X")) * 360 * Time.deltaTime; 
+        //Vector3 rotation = transform.eulerAngles;
 
-        transform.eulerAngles = rotation;
+        //rotation.x += (Input.GetAxis("Mouse Y")) * 360 * Time.deltaTime;
+        //rotation.x = Mathf.Clamp(rotation.x + (Input.GetAxis("Mouse Y") * 360 * Time.deltaTime), 0, 90);
+        //rotation.y += (Input.GetAxis("Mouse X")) * 360 * Time.deltaTime;
+
+        transform.rotation = Quaternion.Euler(Yrot, Xrot, 0);
+
+        transform.position = Player.transform.position + (transform.right * Offset.x) + (transform.up * Offset.y) + (transform.forward * Offset.z);
     }
 }
